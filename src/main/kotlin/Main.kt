@@ -42,7 +42,7 @@ fun App() {
                 }
                 Row(horizontalArrangement = Arrangement.Center) {
                     Text(pastedText)
-                    Text(BionicReader(pastedText.text).annotatedString)
+                    Text(BionicString(pastedText.text).annotatedString)
                 }
             }
         }

@@ -12,7 +12,7 @@ import org.jsoup.Jsoup
 
 
 @JvmInline
-value class BionicReader private constructor(
+value class BionicString private constructor(
     val annotatedString: AnnotatedString
 ) {
     constructor(
