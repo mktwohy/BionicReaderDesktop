@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+    <base href="https://api.bionic-reading.com">
+    <title>
+
+    </title>
+    <style>
+
+        /* ibm-plex-serif-regular - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: normal;
+            font-weight: 400;
+            src: url('fonts/IBMPlexSerif.otf');
+        }
+
+        /* ibm-plex-serif-italic - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: italic;
+            font-weight: 400;
+            src: url('fonts/IBMPlexSerif-Italic.otf');
+        }
+
+        /* ibm-plex-serif-500 - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: normal;
+            font-weight: 500;
+            src: url('fonts/IBMPlexSerif-Medium.otf');
+        }
+
+        /* ibm-plex-serif-500italic - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: italic;
+            font-weight: 500;
+            src: url('fonts/IBMPlexSerif-MediumItalic.otf');
+        }
+
+        /* ibm-plex-serif-600 - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: normal;
+            font-weight: 600;
+            src: url('fonts/IBMPlexSerif-SemiBold.otf');
+        }
+
+        /* ibm-plex-serif-600italic - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: italic;
+            font-weight: 600;
+            src: url('fonts/IBMPlexSerif-SemiBoldItalic.otf');
+        }
+
+        /* ibm-plex-serif-700 - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: normal;
+            font-weight: 700;
+            src: url('fonts/IBMPlexSerif-Bold.otf');
+        }
+
+        /* ibm-plex-serif-700italic - latin */
+        @font-face {
+            font-family: 'IBM Plex Serif';
+            font-style: italic;
+            font-weight: 700;
+            src: url('fonts/IBMPlexSerif-BoldItalic.otf');
+        }
+
+
+        /*effra regular*/
+        @font-face {
+            font-family: 'effra';
+            font-style: normal;
+            font-weight: 400;
+            src: url('fonts/EffraWRg.otf');
+        }
+        /*effra bold*/
+        @font-face {
+            font-family: 'effra';
+            font-style: normal;
+            font-weight: 700;
+            src: url('fonts/EffraWBold.otf');
+        }
+        /*effra heavy*/
+        @font-face {
+            font-family: 'effra';
+            font-style: normal;
+            font-weight: 900;
+            src: url('fonts/EffraWHe.otf');
+        }
+
+    </style>
+    <style>
+        .bionic-reader {
+            font-weight: normal;
+        }
+        .bionic-reader.font-serif {
+            font-family: 'IBM Plex Serif', serif;
+            font-weight: 400;
+        }
+
+        .bionic-reader.font-sans {
+            font-family: 'effra', sans-serif;
+        }
+
+        .bionic-reader-container .edit-url input,
+        .bionic-reader-container .edit-url input:focus {
+            position: relative;
+            color: #7A7A7A;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.27px;
+            line-height: 20px;
+            text-align: left;
+            width: 450px;
+            height: 20px;
+            border: none;
+            outline: none;
+        }
+
+
+
+        .bionic-reader *:not(h1.title) {
+            font-weight: normal !important;
+            font-style: normal !important;
+        }
+
+        .bionic-reader.input-url.output-pdf h1.title{
+            margin-top: -4pt;
+        }
+
+
+        .bionic-reader.font-serif .bionic.b {
+            font-weight: 600 !important;
+        }
+
+        .bionic-reader.font-sans .bionic.b {
+            font-weight: bold !important;
+        }
+
+
+
+        .bionic-reader i,
+        .bionic-reader cite,
+        .bionic-reader em,
+        .bionic-reader var,
+        .bionic-reader address,
+        .bionic-reader dfn {
+            font-style: normal;
+        }
+
+        .bionic-reader.font-serif .bionic.i,
+        .bionic-reader.font-sans .bionic.i {
+            font-style: italic;
+        }
+
+        .bionic-reader.font-origin .bionic.b,
+        .bionic-reader time .bionic.b,
+        .bionic-reader.font-origin .bionic.i {
+            font-weight: bold !important;
+        }
+
+        .bionic-reader header {
+            margin-top: 2em;
+            margin-bottom: 4em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+        }
+
+        .bionic-reader h1 {
+            font-size: 1.8em;
+            line-height: 1.2em;
+            margin-bottom: 1em;
+            letter-spacing: 0mm;
+            font-weight: 900 !important;
+            opacity: 1 !important;
+        }
+        .bionic-reader h1 b.bionic,
+        .bionic-reader.font-sans h1 .bionic.b,
+        .bionic-reader.font-serif h1 .bionic.b
+        {
+            opacity: 1 !important;
+            font-weight: 900 !important;
+        }
+        b b.bionic {
+            opacity: 1 !important;
+        }
+
+
+        .bionic-reader.font-origin h2,
+        .bionic-reader.font-origin h3,
+        .bionic-reader.font-origin h4,
+        .bionic-reader.font-origin h5,
+        .bionic-reader.font-origin h6,
+        .bionic-reader.font-origin h2 .bionic.b,
+        .bionic-reader.font-origin h3 .bionic.b,
+        .bionic-reader.font-origin h4 .bionic.b,
+        .bionic-reader.font-origin h5 .bionic.b,
+        .bionic-reader.font-origin h6 .bionic.b,
+        .bionic-reader.font-sans h2,
+        .bionic-reader.font-sans h3,
+        .bionic-reader.font-sans h4,
+        .bionic-reader.font-sans h5,
+        .bionic-reader.font-sans h6,
+        .bionic-reader.font-sans h2 .bionic.b,
+        .bionic-reader.font-sans h3 .bionic.b,
+        .bionic-reader.font-sans h4 .bionic.b,
+        .bionic-reader.font-sans h5 .bionic.b,
+        .bionic-reader.font-sans h6 .bionic.b {
+            font-weight: 900 !important;
+            font-size: 1em;
+            margin-bottom: 0;
+            opacity: 1 !important;
+        }
+
+        .bionic-reader.font-serif h1 {
+            letter-spacing: -0.2mm;
+            font-weight: bold !important;
+            opacity: 1 !important;
+        }
+
+        .bionic-reader.font-serif h2,
+        .bionic-reader.font-serif h3,
+        .bionic-reader.font-serif h4,
+        .bionic-reader.font-serif h5,
+        .bionic-reader.font-serif h6,
+        .bionic-reader.font-serif h2 .bionic.b,
+        .bionic-reader.font-serif h3 .bionic.b,
+        .bionic-reader.font-serif h4 .bionic.b,
+        .bionic-reader.font-serif h5 .bionic.b,
+        .bionic-reader.font-serif h6 .bionic.b {
+            font-weight: bold !important;
+            font-size: 1em;
+            margin-bottom: 0;
+            opacity: 1 !important;
+        }
+
+
+        .bionic-reader h2,
+        .bionic-reader h3,
+        .bionic-reader h4,
+        .bionic-reader h5,
+        .bionic-reader h6 {
+            line-height: 183%;
+            font-size: 1em;
+        }
+
+        .bionic-reader p {
+            margin-top: 0;
+            margin-bottom: 0em;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .bionic-reader.url p {
+            margin-bottom: 2em;
+        }
+
+        .bionic-reader p.lead{
+            font-size: 1.2em;
+        }
+
+        .bionic-reader.font-origin figure h2,
+        .bionic-reader.font-origin figure h2 .bionic.b,
+        .bionic-reader.font-serif figure h2,
+        .bionic-reader.font-serif figure h2 .bionic.b,
+        .bionic-reader.font-sans figure h2,
+        .bionic-reader.font-sans figure h2 .bionic.b {
+            font-weight: normal !important;
+            font-style: normal !important;
+        }
+
+        .bionic-reader figure p {
+            margin-top: 0 !important;
+            margin-bottom: 0em !important;
+        }
+
+        .bionic-reader figure {
+            margin: 0;
+            margin-bottom: 2em !important;
+        }
+
+        .bionic-reader img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .bionic-reader .reader-credits {
+            font-weight: bold;
+            margin-top: 32px;
+            font-size: 0.85em;
+        }
+
+        .bionic-reader ul {
+            padding-left: 20px;
+        }
+
+        .bionic-reader blockquote {
+            font-weight: 700 !important;
+            margin-left: 40px;
+            margin-right: 0
+        }
+
+        .bionic-reader a,
+        .bionic-reader a:hover,
+        .bionic-reader a:visited {
+            /* text-decoration: none; */
+            color: #323232;
+            text-decoration: underline;
+        }
+
+        .bionic-reader .underline {
+            /* border-bottom-width: 2px;
+            border-bottom-style: solid; */
+            text-decoration: underline;
+        }
+
+
+
+        .bionic-reader a > img {
+            border-bottom: none;
+        }
+
+        .bionic-reader span.debug {
+            font-size: 9px;
+            color: #aaa;
+            display: none;
+        }
+
+        .bionic-reader i,
+        .bionic-reader b,
+        .bionic-reader strong {
+            font-style: normal !important;
+            font-weight: 700 !important;
+        }
+
+        .bionic-reader strong .bionic.b{
+            opacity: 1 !important;
+        }
+
+        .bionic-reader i,
+        .bionic-reader b:not(.bionic),
+        .bionic-reader strong {
+            font-weight: 900 !important;
+            opacity: 1 !important;
+        }
+
+        .bionic-reader .br-image-wrapper img {
+            cursor: pointer;
+        }
+
+        .bionic-reader .scale-up-tl {
+            -webkit-animation: br-scale-up-tl 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+            animation: br-scale-up-tl 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+        }
+
+        .bionic-reader .br-original {
+            -webkit-filter: grayscale(100%);
+            /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+            opacity: 0.75;
+        }
+
+        /* HTML <sup /> tag affecting line height, how to make it consistentt */
+        /* https://stackoverflow.com/questions/1530685/html-sup-tag-affecting-line-height-how-to-make-it-consistent */
+        .bionic-reader sup {
+            font-size: 0.83em;
+            vertical-align: super;
+            line-height: 0;
+        }
+
+        @-webkit-keyframes br-scale-up-tl {
+            0% {
+                -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+                -webkit-transform-origin: 0% 0%;
+                transform-origin: 0% 0%;
+            }
+
+            100% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                -webkit-transform-origin: 0% 0%;
+                transform-origin: 0% 0%;
+            }
+        }
+
+        @keyframes br-scale-up-tl {
+            0% {
+                -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+                -webkit-transform-origin: 0% 0%;
+                transform-origin: 0% 0%;
+            }
+
+            100% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                -webkit-transform-origin: 0% 0%;
+                transform-origin: 0% 0%;
+            }
+        }
+
+    </style>
+    <style>
+        .bionic-reader .bionic-reader-content {
+            width: 100%;
+            max-width: 620px;
+            height: 100%;
+            margin: 0 auto;
+            border-radius: 3px;
+        }
+
+        @media only screen and (min-width: 650px) {
+            .bionic-reader .bionic-reader-content {
+                -webkit-box-shadow: 0 0px 20px -10px rgba(0, 0, 0, 0.75);
+                -moz-box-shadow: 0 0px 20px -10px rgba(0, 0, 0, 0.75);
+                box-shadow: 0 0px 20px -10px rgba(0, 0, 0, 0.75);
+            }
+        }
+
+        /* base */
+        body,
+        html {
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin: 0;
+            height: 100%;
+        }
+
+        html.browser-safari-desktop {
+            overflow: auto;
+
+        }
+
+        html.browser-safari-desktop body {
+            overflow: auto;
+            height: auto;
+        }
+
+        button,
+        input:focus {
+            outline: none;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        button.disabled {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .default-button {
+            position: relative;
+            border: none;
+            background-color: #006EFF;
+            color: #fff;
+            font-size: 15px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 15px;
+            padding: 6px 15px;
+        }
+
+        /* loading indicator */
+        .lds-ellipsis {
+            z-index: 2147483651 !important;
+            width: 64px;
+            height: 64px;
+            display: none;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%)
+        }
+
+        .lds-ellipsis label {
+            width: auto !important;
+            white-space: nowrap;
+        }
+
+        .lds-ellipsis div {
+            position: absolute;
+            top: 33px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #666;
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+
+        .lds-ellipsis div:nth-child(1) {
+            left: 6px;
+            animation: lds-ellipsis1 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(2) {
+            left: 6px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(3) {
+            left: 26px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(4) {
+            left: 45px;
+            animation: lds-ellipsis3 0.6s infinite;
+        }
+
+        @keyframes lds-ellipsis1 {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes lds-ellipsis3 {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes lds-ellipsis2 {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(19px, 0);
+            }
+        }
+
+
+        /*.bionic-reader-header {
+            display: flex;
+            position: fixed;
+            z-index: 10;
+            width: 100%;
+            padding-top: 20px;
+            margin-bottom: 20px;
+            top: -100px;
+            height: 52px;
+            transition: top 0.5s ease-in-out;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        @media only screen and (max-width: 980px) {
+            body.scroll-down .bionic-reader-header {
+                background-color: rgba(255,255,255,0.9);
+            }
+        }
+
+        body.init-animation-finished .bionic-reader-header {
+            top: 0px;
+        }*/
+
+        .bionic-reader-wrapper {
+            margin-bottom: 30px;
+            margin-top: 130px;
+            transition: margin-top 0.3s ease-in-out;
+            -webkit-transition: margin-top 0.3s ease-in-out;
+            /*transition-delay: 0.3s;*/
+            position: relative;
+            /*z-index: -1;*/
+        }
+
+        /* body.settings-enabled .bionic-reader-wrapper {
+            margin-top: 130px;
+        } */
+
+        .bionic-reader-logo {
+            position: fixed;
+            margin-left: 20px;
+            margin-top: 20px;
+            transition: all 0.5s ease-in-out;
+            z-index: 3;
+        }
+
+        body.scroll-up .bionic-reader-logo {
+            margin-left: -100px;
+        }
+
+        .bionic-reader-logo img {
+            position: relative;
+            z-index: 99;
+        }
+
+        .mobile-header-bg {
+            display: none;
+        }
+
+        @media only screen and (max-width: 880px) {
+            .mobile-header-bg {
+                display: block;
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 72px;
+                z-index: 3;
+                transition: all 0.3s ease-in-out;
+                background-color: rgba(255, 255, 255, 0.85);
+            }
+
+            body.scroll-up .mobile-header-bg {
+                margin-top: -72px;
+            }
+
+        }
+
+        .bionic-reader-settings {
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            position: fixed;
+            margin-right: 74px;
+            margin-top: 20px;
+            right: 0;
+            z-index: 4;
+            transition: all 0.3s ease-in-out;
+        }
+
+        body.settings-enabled .bionic-reader-settings {
+            border-radius: 50%;
+            background-color: #f1f1f1;
+        }
+
+        .bionic-reader-close {
+            background-color: #323232;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            position: fixed;
+            margin-right: 20px;
+            margin-top: 20px;
+            right: 0;
+            z-index: 3;
+            transition: all 0.5s ease-in-out;
+        }
+
+        body.settings-enabled .bionic-reader-close {
+            display: none;
+        }
+
+        .bionic-reader-done {
+            background-color: #323232;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            position: fixed;
+            margin-right: 20px;
+            margin-top: 20px;
+            right: 0;
+            z-index: 5;
+            transition: all 0.5s ease-in-out;
+            display: none;
+        }
+
+        body.settings-enabled .bionic-reader-done {
+            display: block;
+        }
+
+
+        body.scroll-up .bionic-reader-close,
+        body.scroll-up .bionic-reader-settings {
+            margin-right: -100px;
+        }
+
+        .bionic-reader-close:hover,
+        .bionic-reader-settings:hover,
+        .bionic-reader-done:hover {
+            cursor: pointer;
+        }
+
+        .edit-url {
+            background-color: #fff;
+            position: relative;
+        }
+
+        .edit-url-inner {
+            width: 628px;
+            margin: 0 auto;
+            color: #7A7A7A;
+            font-family: effra;
+            font-weight: 400;
+            letter-spacing: 0.27px;
+            line-height: 20px;
+            font-size: 16px;
+            padding: 0 0 20px 30px;
+        }
+
+        .edit-url button {
+            width: 55px;
+            color: #7A7A7A;
+            border: none;
+            background: #fff;
+            outline: none;
+            font-size: 15px;
+            font-weight: 500;
+            float: right;
+            margin-right: 15px;
+        }
+
+        .edit-url button:hover {
+            cursor: pointer;
+        }
+
+        /* bionic reader content */
+        .bionic-reader {
+            position: relative;
+            width: 100%;
+            margin: 0;
+            min-height: 100%;
+            top: 0;
+            left: 0;
+            color: #323232;
+        }
+
+        .bionic-reader .bionic-reader-container {
+            max-width: 430px;
+            margin: 0 auto;
+            font-size: 1em;
+            line-height: 160%;
+            padding: 50px 30px 65px 30px;
+            transition: all 0.1s ease 0s;
+        }
+        @media only screen and (max-width: 649px) {
+            .bionic-reader .bionic-reader-container {
+                padding-top: 0;
+            }
+        }
+
+        .br-download-container {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 20px 25px;
+            transition: all 0.5s ease-in-out;
+        }
+
+        body.scroll-up .br-download-container {
+            margin-right: -100px;
+        }
+
+        .br-download-container .download-icons {
+            width: 32px;
+            height: 32px;
+            margin-top: 25px;
+        }
+
+        @media only screen and (max-width: 649px) {
+            .br-download-container .download-icons {
+                border-radius: 50%;
+                background-color: #fff !important;
+            }
+        }
+
+        .br-download-container .download-icons:hover {
+            cursor: pointer;
+        }
+
+        #share-icon {
+            background: transparent url("/icons/share.svg");
+            background-repeat: no-repeat;
+        }
+
+        #download-icon {
+            background: transparent url("/icons/download.svg");
+            background-repeat: no-repeat;
+        }
+
+        #kindle-icon {
+            background: transparent url("/icons/send_to_kindle.svg");
+            background-repeat: no-repeat;
+        }
+
+
+        /* Modal */
+        .jquery-modal.blocker {
+            z-index: 99 !important;
+        }
+
+        .modal {
+            padding: 20px 65px;
+            font-family: effra;
+            font-size: 18px;
+            line-height: 27px;
+            letter-spacing: 0.18px;
+            color: #323232;
+        }
+
+        .modal a.close-modal {
+            top: 12px !important;
+            right: 12px !important;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('/images/cross.svg') !important;
+            background-color: #323232;
+            border-radius: 50%;
+            top: 12px;
+            right: 12px;
+
+        }
+
+        .modal h3 {
+            text-align: left;
+            font-size: 36px !important;
+            letter-spacing: 0.12px;
+            line-height: 36px;
+            margin-bottom: 20px;
+            color: #006eff;
+
+        }
+
+        .modal input {
+            width: 95%;
+            border: none;
+            outline: none;
+            height: 30px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            font-size: 16px;
+            padding: 2px 12px;
+            box-sizing: border-box;
+        }
+
+        label.copied{
+            transition: background-color 200ms ease-in-out;
+            background-color: #A6CDFF !important;
+        }
+
+        .email-status-text {
+            color: red !important;
+            display: none;
+        }
+
+        #downloadStatusModal {
+            text-align: center;
+            width: 350px;
+        }
+
+        #downloadStatusModal p {
+            margin-bottom: 20px;
+        }
+
+        #downloadStatusModal .close-modal {
+            display: none;
+        }
+
+        #modalLoader {
+            display: block;
+            position: relative;
+            height: 44px;
+
+        }
+
+        #modalLoader div {
+            background: #006eff;
+        }
+
+        #kindleLoader {
+            display: none;
+            position: relative !important;
+            height: 35px;
+        }
+
+        #shareModal {
+            padding-bottom: 50px;
+        }
+
+        #shareModal .share-input {
+            position: relative;
+            display: flex;
+        }
+
+        #shareModal .share-input label {
+            width: 95%;
+            height: 28px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            font-size: 16px;
+            padding-left: 8px;
+            padding-right: 45px;
+            line-height: 28px;
+            text-overflow: ellipsis;
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        #shareModal .share-input img{
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            width: 20px;
+        }
+
+        #kindleModal .copy-icon {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+        }
+
+        #shareModal .share-input label,
+        #shareModal .share-input img:hover,
+        #kindleModal .copy-icon:hover {
+            cursor: pointer;
+        }
+
+        #downloadModal .download-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .download-button {
+            display: inline-block;
+            justify-content: center;
+            width: 140px;
+            height: 140px;
+            border: 1px solid #F1F1F1;
+            border-radius: 12px;
+            text-align: center;
+            margin: 0 30px;
+            margin-bottom: 80px;
+            margin-top: 44px;
+        }
+
+        .download-button img {
+            margin-top: 12px;
+            margin-bottom: 8px;
+            width: 48px;
+            height: 48px;
+        }
+
+        .download-button p {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .download-button:hover {
+            cursor: pointer;
+        }
+
+        #kindleModal {
+            max-width: 630px;
+        }
+
+        #kindleModal input {
+            width: 410px;
+            margin-right: 16px;
+            font-size: 14px;
+            border-radius: 16px;
+        }
+
+        #kindleModal button {
+            width: 110px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        #kindleModal label {
+            position: relative;
+            background-color: #F1F1F1;
+            padding: 0 5px;
+            padding-right: 30px;
+            border-radius: 5px;
+            color: #006eff;
+            display: inline-block;
+        }
+        #kindleModal label:hover{
+            cursor: pointer;
+        }
+
+        /* Mobile screens */
+        @media only screen and (max-width: 655px) {
+            .modal {
+                font-size: 16px;
+                line-height: 1.16;
+            }
+
+            .modal input {
+                width: 100% !important;
+            }
+
+            #kindleModal {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .download-button {
+                margin: 0 10px;
+            }
+            #kindleModal .copy-icon{
+                top: 1px;
+            }
+            #kindleModal label{
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+        }
+
+        @media only screen and (max-width: 460px) {
+            #downloadModal .download-container {
+                display: inherit;
+                text-align: center;
+            }
+
+            .download-button {
+                margin: 10px 5px;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="/js/jQuerySlim.js"></script>
+    <script type="text/javascript" src="/js/storage.js"></script>
+    <!-- jQuery Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <script type="text/javascript">
+        window.onerror = function (message, url, lineNo) {
+            console.warn('onerror', message, url, lineNo)
+        }
+        var bionicId = '3c1697c6-0f63-f836-f6c9-c50620045904_b3f03aea6af50b8099d190c6701b8779'
+        var token = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTg4NzE3NzgsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjUwMDAvdGVzdC8iXSwiaXNzIjoiREVNTyIsInN1YiI6ImRlbW9Ad2VidWxvcy5jb20ifQ.PQK4TEVcdLvu45Ur12jzYDZCn_nTckGKm7Uhe2ToBTAQ232ALFoftJ_NgkNHAv-wdhZF_936-wlXMcc2zAv-zg'
+        var toolbarEnabled = false
+        var _fixation = 1
+        var _saccade = 1
+        var _font = ''
+        var shareUrl = window.parent.location.href + "?url="
+
+        _fixation = 1
+        _saccade = 10
+        _font = 'font-serif'
+
+        var emailEmptyError = 'Invalid e-mail. Try again.'
+    </script>
+</head>
+
+<body class="bionic-reader-iframe">
+
+<div class="mobile-header-bg"></div>
+<div class="bionic-reader-logo">
+    <img src="/images/logo.svg" />
+</div>
+<div class="bionic-reader-settings">
+    <img src="/icons/settings.svg" alt="">
+</div>
+<div class="bionic-reader-close">
+    <img src="/images/cross.svg" alt="" />
+</div>
+<div class="bionic-reader-done">
+    <img src="/icons/done.svg" alt="" />
+</div>
+
+<div class="bionic-reader-wrapper">
+    <!--
+
+        -->
+
+
+
+    <div class="br-download-container">
+
+        <div id="download-icon" class="download-icons"></div>
+        <div id="kindle-icon" class="download-icons"></div>
+    </div>
+
+
+    <div id="shareModal" class="modal">
+        <h3>Share<br/> your experience </h3>
+        <p>Use following link to share.</p>
+        <div class="share-input">
+            <label></label>
+            <img src="/icons/copy.svg" alt="copy text">
+        </div>
+    </div>
+    <div id="downloadModal" class="modal">
+        <h3>Choose <br/> your format.</h3>
+        <p>Please choose your prefered format.</p>
+        <div class="download-container">
+            <div class="download-button pdf">
+                <img src="/icons/download.svg" alt="">
+                <p>Download <br /><b>PDF</b></p>
+            </div>
+            <div class="download-button epub">
+                <img src="/icons/download.svg" alt="">
+                <p>Download<br /> <b>EPUB</b></p>
+            </div>
+        </div>
+    </div>
+    <div id="kindleModal" class="modal">
+        <h3>Send <br/> to Kindle.</h3>
+        <p>Go to the Amazon website. To the right of the search box, go to &ldquo;Account & Lists&rdquo; and click on &ldquo;Manage Your Content and Devices&rdquo;.</p><p>Then go to the menu &ldquo;Preferences&rdquo; and click on &ldquo;Personal Document Settings&rdquo;.</p><p>Now you can add <label>kindle@bionic-reading.com</label> to your &ldquo;Approved Personal Documents e-mail List&rdquo;.</p><p>Now you have your personal e-mail address for your Kindle under &ldquo;Send-to-Kindle e-mail Settings&rdquo;. You can edit and change this address at any time.</p><p>Have fun with Bionic Reading®</p>
+        <div class="modal-input-container">
+            <p class="email-status-text"></p>
+            <p>
+                <input class="input-kindle-mail default-input-text" type="text" placeholder="your.email@kindle.com">
+                <button id="sendToKindle" class="default-button" type="button">Send</button>
+            <div class="lds-ellipsis" id="kindleLoader">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            </p>
+
+        </div>
+    </div>
+    <div id="downloadStatusModal" class="modal">
+        <p>Download in process. This can take a while</p>
+        <div class="lds-ellipsis" id="modalLoader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/js/control.js"></script>
+
+</body>
+
+</html>
