@@ -20,8 +20,8 @@ object BionicReader {
         text: String,
         fixation: Int = 1,
         saccade: Int = 10
-    ): AnnotatedString {
-        return if (text.isEmpty())
+    ): AnnotatedString =
+        if (text.isEmpty())
             buildAnnotatedString {
                 withStyle(style = SpanStyle(color = Color.Red)) {
                     append("ERROR")
@@ -31,7 +31,7 @@ object BionicReader {
             post(text, fixation = fixation, saccade = saccade)
                 .toBionicWords()
                 .toAnnotatedString()
-    }
+
 
     private fun List<BionicWord>.toAnnotatedString(): AnnotatedString =
         buildAnnotatedString {
