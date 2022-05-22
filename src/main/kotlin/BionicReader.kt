@@ -11,7 +11,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.jsoup.Jsoup
 
-object BionicString {
+object BionicReader {
     private const val BIONIC_API_KEY = "9524d12ec6msh566e8fe138f876ep18b69cjsn490f4aabfe74"
 
     data class BionicWord(val bold: String, val plain: String)

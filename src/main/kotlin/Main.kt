@@ -43,7 +43,7 @@ fun App() {
                         text = pastedText,
                         modifier = Modifier.fillMaxWidth(0.5f)
                     )
-                    Text(BionicString.textToAnnotatedString(pastedText.text))
+                    Text(BionicReader.textToAnnotatedString(pastedText.text))
                 }
             }
         }
