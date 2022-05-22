@@ -20,9 +20,12 @@ value class BionicReader private constructor(
         fixation: Int = 1,
         saccade: Int = 10
     ) : this(
-        bionicReaderApiPost(text, fixation = fixation, saccade = saccade)
-            .toBionicWords()
-            .toAnnotatedString()
+        if (text.isEmpty())
+            buildAnnotatedString {  }
+        else
+            bionicReaderApiPost(text, fixation = fixation, saccade = saccade)
+                .toBionicWords()
+                .toAnnotatedString()
     )
 
     companion object {
