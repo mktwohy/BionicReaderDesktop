@@ -17,9 +17,11 @@ object BionicReader {
     private const val DEFAULT_SACCADE: Int = 10
     private val okHttpClient = OkHttpClient()
 
-    data class BionicWord(val bold: String, val plain: String)
+    data class BionicWord(val bold: String, val plain: String, val preChar: Char?, val postChar: Char?){
+        val length = bold.length + plain.length + (if (preChar != null) 1 else 0) + (if (postChar != null) 1 else 0)
+    }
 
-    fun textToAnnotatedString(
+    fun read(
         text: String,
         fixation: Int = DEFAULT_FIXATION,
         saccade: Int = DEFAULT_SACCADE
@@ -33,32 +35,65 @@ object BionicReader {
                 .toAnnotatedString()
 
 
-    private fun List<BionicWord>.toAnnotatedString(): AnnotatedString =
-        buildAnnotatedString {
+    private fun List<BionicWord>.toAnnotatedString(): AnnotatedString {
+        return buildAnnotatedString {
+
             for (bionicWord in this@toAnnotatedString) {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    bionicWord.preChar?.let { append(it) }
                     append(bionicWord.bold)
                 }
                 append(bionicWord.plain)
+                bionicWord.postChar?.let { append(it) }
                 append(' ')
+
             }
         }
-
-    private fun Html.parseBionicWords(): MutableList<BionicWord> {
-        val ret = mutableListOf<BionicWord>()
-
-        val body = Jsoup.parse(this).body()
-        val plainTextWords = body.text().split(' ').toMutableList()
-
-        body.forEach { element ->
-            if (element.hasClass("b bionic")) {
-                val bold = element.text()
-                val plain = plainTextWords.removeFirst().removePrefix(bold)
-                ret += BionicWord(bold, plain)
-            }
-        }
-        return ret
     }
+
+
+
+    private fun Html.parseBionicWords(): List<BionicWord> {
+        val body = Jsoup.parse(this)
+
+        val plainWords = body.text().split(' ').toMutableList()
+
+        val boldPartialWords = body
+            .toList()
+            .filter { it.hasClass("b bionic") }
+            .map { it.text() }
+            .toMutableList()
+
+        val combined = plainWords.map { plainWord ->
+            val boldPartialWord = boldPartialWords.firstOrNull()
+
+            val nonAlphaNumeric = plainWord.nonAlphaNumericCharPositions()
+            val preNonAlphaNum = nonAlphaNumeric.find { it.first == 0 }?.second
+            val postNonAlphaNum = nonAlphaNumeric.find { it.first == boldPartialWord?.length }?.second
+
+
+            val p = plainWord.filter { it.isLetterOrDigit() }
+            val b = boldPartialWord?.filter { it.isLetterOrDigit() }
+
+            when (b) {
+                null    -> BionicWord("", p, preNonAlphaNum, postNonAlphaNum)
+                !in p   -> BionicWord("", p, preNonAlphaNum, postNonAlphaNum)
+                p   -> {
+                    boldPartialWords.removeFirst()
+                    BionicWord(b, "", preNonAlphaNum, postNonAlphaNum)
+                }
+                else -> {
+                    boldPartialWords.removeFirst()
+                    BionicWord(b, p.replace(b, ""), preNonAlphaNum, postNonAlphaNum)
+                }
+            }
+        }
+
+        println("${plainWords.size}, ${boldPartialWords.size}")
+        println("${plainWords.count{it.length == 1}}")
+        return combined
+    }
+
 
     /**
      * @param content plain text, html string, or the URL to a not password protected page
