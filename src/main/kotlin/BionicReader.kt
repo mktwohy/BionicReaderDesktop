@@ -12,7 +12,7 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 
 object BionicReader {
-    private const val BIONIC_API_KEY = "9524d12ec6msh566e8fe138f876ep18b69cjsn490f4aabfe74"
+    private const val API_KEY = "9524d12ec6msh566e8fe138f876ep18b69cjsn490f4aabfe74"
 
     data class BionicWord(val bold: String, val plain: String)
 
@@ -92,7 +92,7 @@ object BionicReader {
             .post(body)
             .addHeader("content-type", "application/x-www-form-urlencoded")
             .addHeader("X-RapidAPI-Host", "bionic-reading1.p.rapidapi.com")
-            .addHeader("X-RapidAPI-Key", BIONIC_API_KEY)
+            .addHeader("X-RapidAPI-Key", API_KEY)
             .build()
 
         return client.newCall(request).execute()
