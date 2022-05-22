@@ -1,6 +1,4 @@
 import okhttp3.Response
-import org.jsoup.Connection
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 typealias Html = String

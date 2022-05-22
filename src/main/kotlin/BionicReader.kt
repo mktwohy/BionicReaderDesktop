@@ -17,10 +17,6 @@ object BionicReader {
     private const val DEFAULT_SACCADE: Int = 10
     private val okHttpClient = OkHttpClient()
 
-    data class BionicWord(val bold: String, val plain: String, val preChar: Char?, val postChar: Char?){
-        val length = bold.length + plain.length + (if (preChar != null) 1 else 0) + (if (postChar != null) 1 else 0)
-    }
-
     fun read(
         text: String,
         fixation: Int = DEFAULT_FIXATION,
@@ -35,28 +31,30 @@ object BionicReader {
                 .toAnnotatedString()
 
 
-    private fun List<BionicWord>.toAnnotatedString(): AnnotatedString {
+    private fun List<BionicString>.toAnnotatedString(): AnnotatedString {
         return buildAnnotatedString {
-
-            for (bionicWord in this@toAnnotatedString) {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    bionicWord.preChar?.let { append(it) }
-                    append(bionicWord.bold)
+            for (bionicString in this@toAnnotatedString) {
+                bionicString.text.forEachIndexed { i, c ->
+                    if (bionicString.isBold(i)) {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(c)
+                        }
+                    }
+                    else {
+                        append(c)
+                    }
                 }
-                append(bionicWord.plain)
-                bionicWord.postChar?.let { append(it) }
                 append(' ')
-
             }
         }
     }
 
 
 
-    private fun Html.parseBionicWords(): List<BionicWord> {
+    private fun Html.parseBionicWords(): List<BionicString> {
         val body = Jsoup.parse(this)
 
-        val plainWords = body.text().split(' ').toMutableList()
+        val plainWords = body.text().split(' ', '-').toMutableList()
 
         val boldPartialWords = body
             .toList()
@@ -64,34 +62,15 @@ object BionicReader {
             .map { it.text() }
             .toMutableList()
 
-        val combined = plainWords.map { plainWord ->
+
+        return plainWords.map { plainWord ->
             val boldPartialWord = boldPartialWords.firstOrNull()
-
-            val nonAlphaNumeric = plainWord.nonAlphaNumericCharPositions()
-            val preNonAlphaNum = nonAlphaNumeric.find { it.first == 0 }?.second
-            val postNonAlphaNum = nonAlphaNumeric.find { it.first == boldPartialWord?.length }?.second
-
-
-            val p = plainWord.filter { it.isLetterOrDigit() }
-            val b = boldPartialWord?.filter { it.isLetterOrDigit() }
-
-            when (b) {
-                null    -> BionicWord("", p, preNonAlphaNum, postNonAlphaNum)
-                !in p   -> BionicWord("", p, preNonAlphaNum, postNonAlphaNum)
-                p   -> {
-                    boldPartialWords.removeFirst()
-                    BionicWord(b, "", preNonAlphaNum, postNonAlphaNum)
-                }
-                else -> {
-                    boldPartialWords.removeFirst()
-                    BionicWord(b, p.replace(b, ""), preNonAlphaNum, postNonAlphaNum)
-                }
-            }
+            val boldIndexRange = boldPartialWord?.let { plainWord.indexRangeOf(it) }
+            if (boldIndexRange != null)
+                boldPartialWords.removeFirst()
+            println("$plainWord $boldPartialWord")
+            BionicString(plainWord, boldIndexRange)
         }
-
-        println("${plainWords.size}, ${boldPartialWords.size}")
-        println("${plainWords.count{it.length == 1}}")
-        return combined
     }
 
 
