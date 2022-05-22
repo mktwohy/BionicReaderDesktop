@@ -1,4 +1,3 @@
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -15,10 +14,9 @@ object BionicReader {
     private const val API_KEY = "9524d12ec6msh566e8fe138f876ep18b69cjsn490f4aabfe74"
     private const val DEFAULT_FIXATION: Int = 1
     private const val DEFAULT_SACCADE: Int = 10
-
+    private val okHttpClient = OkHttpClient()
 
     data class BionicWord(val bold: String, val plain: String)
-
 
     fun textToAnnotatedString(
         text: String,
@@ -26,14 +24,11 @@ object BionicReader {
         saccade: Int = DEFAULT_SACCADE
     ): AnnotatedString =
         if (text.isEmpty())
-            buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Color.Red)) {
-                    append("ERROR")
-                }
-            }
+            buildAnnotatedString {  }
         else
             post(text, fixation = fixation, saccade = saccade)
-                .toBionicWords()
+                .toHtml()
+                .parseBionicWords()
                 .toAnnotatedString()
 
 
@@ -48,11 +43,10 @@ object BionicReader {
             }
         }
 
-    private fun Response.toBionicWords(): MutableList<BionicWord> {
+    private fun String.parseBionicWords(): MutableList<BionicWord> {
         val ret = mutableListOf<BionicWord>()
 
-        val html = this.body?.string() ?: return ret
-        val body = Jsoup.parse(html).body()
+        val body = Jsoup.parse(this).body()
         val plainTextWords = body.text().split(' ').toMutableList()
 
         body.forEach { element ->
@@ -84,7 +78,6 @@ object BionicReader {
         saccade: Int = 10
     ): Response {
         val formattedContent = content.replace(" ", "%20")
-        val client = OkHttpClient()
 
         val mediaType = "application/x-www-form-urlencoded".toMediaTypeOrNull()
 
@@ -99,6 +92,6 @@ object BionicReader {
             .addHeader("X-RapidAPI-Key", API_KEY)
             .build()
 
-        return client.newCall(request).execute()
+        return okHttpClient.newCall(request).execute()
     }
 }
