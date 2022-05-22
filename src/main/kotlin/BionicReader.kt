@@ -10,6 +10,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.jsoup.Jsoup
 
+
 object BionicReader {
     private const val API_KEY = "9524d12ec6msh566e8fe138f876ep18b69cjsn490f4aabfe74"
     private const val DEFAULT_FIXATION: Int = 1
@@ -43,7 +44,7 @@ object BionicReader {
             }
         }
 
-    private fun String.parseBionicWords(): MutableList<BionicWord> {
+    private fun Html.parseBionicWords(): MutableList<BionicWord> {
         val ret = mutableListOf<BionicWord>()
 
         val body = Jsoup.parse(this).body()
