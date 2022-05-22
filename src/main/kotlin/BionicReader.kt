@@ -13,13 +13,17 @@ import org.jsoup.Jsoup
 
 object BionicReader {
     private const val API_KEY = "9524d12ec6msh566e8fe138f876ep18b69cjsn490f4aabfe74"
+    private const val DEFAULT_FIXATION: Int = 1
+    private const val DEFAULT_SACCADE: Int = 10
+
 
     data class BionicWord(val bold: String, val plain: String)
 
+
     fun textToAnnotatedString(
         text: String,
-        fixation: Int = 1,
-        saccade: Int = 10
+        fixation: Int = DEFAULT_FIXATION,
+        saccade: Int = DEFAULT_SACCADE
     ): AnnotatedString =
         if (text.isEmpty())
             buildAnnotatedString {
@@ -49,12 +53,12 @@ object BionicReader {
 
         val html = this.body?.string() ?: return ret
         val body = Jsoup.parse(html).body()
-        val words = body.text().split(' ').toMutableList()
+        val plainTextWords = body.text().split(' ').toMutableList()
 
         body.forEach { element ->
             if (element.hasClass("b bionic")) {
                 val bold = element.text()
-                val plain = words.removeFirst().removePrefix(bold)
+                val plain = plainTextWords.removeFirst().removePrefix(bold)
                 ret += BionicWord(bold, plain)
             }
         }
